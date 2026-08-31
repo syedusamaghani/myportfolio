@@ -491,6 +491,33 @@ section {
   color: var(--amber);
 }
 
+.mobile-menu-close {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text);
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s var(--ease);
+}
+.mobile-menu-close:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+  transform: rotate(90deg);
+}
+
 @media (max-width: 860px) {
   .nav-links {
     display: none;
@@ -816,11 +843,22 @@ section {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 2;
+  pointer-events: none;
   background: repeating-linear-gradient(
     135deg,
     rgba(227, 179, 65, 0.05) 0 2px,
     transparent 2px 14px
   );
+}
+.about-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  position: relative;
+  z-index: 1;
+  filter: grayscale(0.15) contrast(1.03);
 }
 .about-photo-frame .initials {
   font-family: var(--font-display);
@@ -843,6 +881,7 @@ section {
   display: flex;
   align-items: center;
   gap: 8px;
+  z-index: 11;
 }
 .about-photo-tag .dot {
   width: 6px;
@@ -1113,63 +1152,75 @@ section {
 }
 
 .project-thumb {
-  aspect-ratio: 16/10;
+  height: 280px;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: linear-gradient(135deg, var(--panel-2), var(--panel));
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
+  scrollbar-width: thin;
+  scrollbar-color: var(--amber) var(--panel-2);
+  scroll-behavior: smooth;
+}
+.project-thumb::-webkit-scrollbar {
+  width: 7px;
+}
+.project-thumb::-webkit-scrollbar-track {
+  background: var(--panel-2);
+}
+.project-thumb::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.project-thumb::-webkit-scrollbar-thumb:hover {
+  background: var(--amber);
 }
 .project-thumb img {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.9) saturate(1);
-  transition:
-    filter 0.45s var(--ease),
-    transform 0.5s var(--ease);
+  height: auto;
+  filter: brightness(0.94) saturate(1);
+  transition: filter 0.45s var(--ease);
 }
 .project-card:hover .project-thumb img {
-  filter: brightness(1) saturate(1.1);
-  transform: scale(1.05);
+  filter: brightness(1) saturate(1.08);
 }
-.project-thumb::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    180deg,
-    rgba(11, 14, 19, 0.05) 0%,
-    rgba(11, 14, 19, 0.75) 100%
-  );
-}
-.project-thumb::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.4;
-  z-index: 1;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 18px 18px;
-}
-.project-thumb span {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--dim);
-  position: relative;
+.project-thumb-tag {
+  position: sticky;
+  top: 0;
+  left: 0;
   z-index: 2;
-  letter-spacing: 0.03em;
-  padding: 12px 14px;
-  transition: color 0.35s ease;
-}
-.project-card:hover .project-thumb span {
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
   color: var(--amber);
+  letter-spacing: 0.03em;
+  padding: 5px 10px;
+  margin: 8px;
+  background: rgba(11, 14, 19, 0.78);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+}
+.project-thumb-scrollcue {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  height: 26px;
+  margin-top: -26px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(11, 14, 19, 0.85));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4px;
+}
+.project-thumb-scrollcue span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--faint);
+  letter-spacing: 0.05em;
 }
 
 .project-body {
